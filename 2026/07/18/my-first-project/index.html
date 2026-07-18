@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从0到1开发我的第一个桌面软件 KillSoundHelper | zzt|个人网站</title><meta name="author" content="天少"><meta name="copyright" content="天少"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、项目起源很多游戏都有击杀音效反馈，但是玩家通常只能使用游戏默认音效。 于是我产生了一个想法： 能不能做一个简单工具，让玩家自由管理自己的击杀音效？ 于是 KillSoundHelper 诞生。  二、项目介绍KillSoundHelper 是一个基于 C++ 和 Qt6 开发的 Windows 桌面应用。 主要功能：  自定义音效 WAV文件选择 音效试听 最近使用记录 配置保存   三、技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0到1开发我的第一个桌面软件 KillSoundHelper">
+<meta property="og:url" content="https://supperzzt.github.io/2026/07/18/my-first-project/index.html">
+<meta property="og:site_name" content="zzt|个人网站">
+<meta property="og:description" content="一、项目起源很多游戏都有击杀音效反馈，但是玩家通常只能使用游戏默认音效。 于是我产生了一个想法： 能不能做一个简单工具，让玩家自由管理自己的击杀音效？ 于是 KillSoundHelper 诞生。  二、项目介绍KillSoundHelper 是一个基于 C++ 和 Qt6 开发的 Windows 桌面应用。 主要功能：  自定义音效 WAV文件选择 音效试听 最近使用记录 配置保存   三、技术">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://supperzzt.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-07-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-18T07:20:42.786Z">
+<meta property="article:author" content="天少">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Qt">
+<meta property="article:tag" content="软件开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://supperzzt.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从0到1开发我的第一个桌面软件 KillSoundHelper",
+  "url": "https://supperzzt.github.io/2026/07/18/my-first-project/",
+  "image": "https://supperzzt.github.io/img/avatar.jpg",
+  "datePublished": "2026-07-17T16:00:00.000Z",
+  "dateModified": "2026-07-18T07:20:42.786Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "天少",
+      "url": "https://supperzzt.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.jpg"><link rel="canonical" href="https://supperzzt.github.io/2026/07/18/my-first-project/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从0到1开发我的第一个桌面软件 KillSoundHelper',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.jpg" alt="Logo"><span class="site-name">zzt|个人网站</span></a><a class="nav-page-title" href="/"><span class="site-name">从0到1开发我的第一个桌面软件 KillSoundHelper</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">从0到1开发我的第一个桌面软件 KillSoundHelper</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-17T16:00:00.000Z" title="发表于 2026-07-18 00:00:00">2026-07-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-18T07:20:42.786Z" title="更新于 2026-07-18 15:20:42">2026-07-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/">项目开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="一、项目起源"><a href="#一、项目起源" class="headerlink" title="一、项目起源"></a>一、项目起源</h2><p>很多游戏都有击杀音效反馈，<br>但是玩家通常只能使用游戏默认音效。</p>
+<p>于是我产生了一个想法：</p>
+<p>能不能做一个简单工具，<br>让玩家自由管理自己的击杀音效？</p>
+<p>于是 KillSoundHelper 诞生。</p>
+<hr>
+<h2 id="二、项目介绍"><a href="#二、项目介绍" class="headerlink" title="二、项目介绍"></a>二、项目介绍</h2><p>KillSoundHelper 是一个基于 C++ 和 Qt6 开发的 Windows 桌面应用。</p>
+<p>主要功能：</p>
+<ul>
+<li>自定义音效</li>
+<li>WAV文件选择</li>
+<li>音效试听</li>
+<li>最近使用记录</li>
+<li>配置保存</li>
+</ul>
+<hr>
+<h2 id="三、技术选择"><a href="#三、技术选择" class="headerlink" title="三、技术选择"></a>三、技术选择</h2><p>开发语言：</p>
+<p>C++</p>
+<p>界面：</p>
+<p>Qt6 Widgets</p>
+<p>构建：</p>
+<p>CMake</p>
+<p>音频：</p>
+<p>Qt Multimedia</p>
+<hr>
+<h2 id="四、开发过程"><a href="#四、开发过程" class="headerlink" title="四、开发过程"></a>四、开发过程</h2><h3 id="1-命令行版本"><a href="#1-命令行版本" class="headerlink" title="1. 命令行版本"></a>1. 命令行版本</h3><p>最开始：</p>
+<p>只有一个简单程序。</p>
+<p>功能：</p>
+<ul>
+<li>播放指定音效</li>
+<li>快捷键触发</li>
+</ul>
+<hr>
+<h3 id="2-增加图形界面"><a href="#2-增加图形界面" class="headerlink" title="2. 增加图形界面"></a>2. 增加图形界面</h3><p>为了让普通用户使用：</p>
+<p>加入：</p>
+<ul>
+<li>选择按钮</li>
+<li>播放按钮</li>
+<li>音效路径显示</li>
+</ul>
+<hr>
+<h3 id="3-增加历史记录"><a href="#3-增加历史记录" class="headerlink" title="3. 增加历史记录"></a>3. 增加历史记录</h3><p>用户可能有多个音效。</p>
+<p>所以增加：</p>
+<ul>
+<li>最近使用列表</li>
+<li>自动保存配置</li>
+</ul>
+<hr>
+<h3 id="4-软件打包发布"><a href="#4-软件打包发布" class="headerlink" title="4. 软件打包发布"></a>4. 软件打包发布</h3><p>完成：</p>
+<ul>
+<li>Release编译</li>
+<li>Qt运行库部署</li>
+<li>GitHub发布</li>
+</ul>
+<p>让别人可以下载使用。</p>
+<hr>
+<h2 id="五、遇到的问题"><a href="#五、遇到的问题" class="headerlink" title="五、遇到的问题"></a>五、遇到的问题</h2><p>开发过程中遇到：</p>
+<h3 id="Qt环境配置"><a href="#Qt环境配置" class="headerlink" title="Qt环境配置"></a>Qt环境配置</h3><p>刚开始：</p>
+<p>不知道Qt项目结构。</p>
+<p>后来理解：</p>
+<p>源码 → 编译 → 运行程序</p>
+<hr>
+<h3 id="音效重复播放问题"><a href="#音效重复播放问题" class="headerlink" title="音效重复播放问题"></a>音效重复播放问题</h3><p>发现：</p>
+<p>每点击一次播放按钮都会创建新的 QSoundEffect。</p>
+<p>修改为：</p>
+<p>统一管理音效对象。</p>
+<hr>
+<h3 id="软件发布问题"><a href="#软件发布问题" class="headerlink" title="软件发布问题"></a>软件发布问题</h3><p>遇到：</p>
+<ul>
+<li>Release构建</li>
+<li>DLL依赖</li>
+<li>GitHub文件大小限制</li>
+</ul>
+<p>逐渐理解软件发布流程。</p>
+<hr>
+<h2 id="六、项目展示"><a href="#六、项目展示" class="headerlink" title="六、项目展示"></a>六、项目展示</h2><p><img src="/2026/07/18/my-first-project/killsoundhelper-main.png" alt="KillSoundHelper界面"></p>
+<hr>
+<h2 id="七、未来计划"><a href="#七、未来计划" class="headerlink" title="七、未来计划"></a>七、未来计划</h2><p>后续可能增加：</p>
+<ul>
+<li>更多音频格式支持</li>
+<li>快捷键触发</li>
+<li>游戏检测</li>
+<li>音效库</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这是我的第一个完整桌面软件。</p>
+<p>虽然功能还比较简单，<br>但是完成了从：</p>
+<p>想法 → 开发 → 测试 → 发布</p>
+<p>的完整流程。</p>
+<p>未来会继续完善。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://supperzzt.github.io">天少</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://supperzzt.github.io/2026/07/18/my-first-project/">https://supperzzt.github.io/2026/07/18/my-first-project/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://supperzzt.github.io" target="_blank">zzt|个人网站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Qt/">Qt</a><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/07/03/hello/" title="我的第一篇博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">我的第一篇博客</div></div><div class="info-2"><div class="info-item-1">👋 你好，我是 zzt这是我在 Hexo 上搭建的第一个个人网站，也是我的第一篇正式博客。 我是一名计算机专业的大三学生，目前正在学习：  C++ Web开发 前端基础 项目实践   🚀 我为什么做这个网站？这个网站主要有三个目的：  记录我的学习过程   展示我的项目作品   为未来实习做准备   🎯 我现在的目标目前我正在努力完成这些事情：  ✔ 做出第一个五子棋小游戏项目   ✔ 学习 C++ 基础与进阶   ✔ 搭建自己的作品集网站   ✔ 寻找第一份实习机会   💡 我的项目目前正在进行的项目： 🎮 五子棋小游戏一个基于编程实现的简单五子棋游戏，目标是：  实现基础对战逻辑 支持人机对战（后续） 做成可展示作品   📌 总结这是我开始记录成长的第一步。 未来我会在这里不断更新我的学习与项目进展。  </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/03/hello/" title="我的第一篇博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-03</div><div class="info-item-2">我的第一篇博客</div></div><div class="info-2"><div class="info-item-1">👋 你好，我是 zzt这是我在 Hexo 上搭建的第一个个人网站，也是我的第一篇正式博客。 我是一名计算机专业的大三学生，目前正在学习：  C++ Web开发 前端基础 项目实践   🚀 我为什么做这个网站？这个网站主要有三个目的：  记录我的学习过程   展示我的项目作品   为未来实习做准备   🎯 我现在的目标目前我正在努力完成这些事情：  ✔ 做出第一个五子棋小游戏项目   ✔ 学习 C++ 基础与进阶   ✔ 搭建自己的作品集网站   ✔ 寻找第一份实习机会   💡 我的项目目前正在进行的项目： 🎮 五子棋小游戏一个基于编程实现的简单五子棋游戏，目标是：  实现基础对战逻辑 支持人机对战（后续） 做成可展示作品   📌 总结这是我开始记录成长的第一步。 未来我会在这里不断更新我的学习与项目进展。  </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">天少</div><div class="author-info-description">计算机专业学生，正在学习C++与Web开发，记录项目与成长</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/supperzzt"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E8%B5%B7%E6%BA%90"><span class="toc-number">1.</span> <span class="toc-text">一、项目起源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">二、项目介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%8A%80%E6%9C%AF%E9%80%89%E6%8B%A9"><span class="toc-number">3.</span> <span class="toc-text">三、技术选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">四、开发过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%89%88%E6%9C%AC"><span class="toc-number">4.1.</span> <span class="toc-text">1. 命令行版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A2%9E%E5%8A%A0%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2"><span class="toc-number">4.2.</span> <span class="toc-text">2. 增加图形界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A2%9E%E5%8A%A0%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="toc-number">4.3.</span> <span class="toc-text">3. 增加历史记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BD%AF%E4%BB%B6%E6%89%93%E5%8C%85%E5%8F%91%E5%B8%83"><span class="toc-number">4.4.</span> <span class="toc-text">4. 软件打包发布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">五、遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qt%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text">Qt环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E6%95%88%E9%87%8D%E5%A4%8D%E6%92%AD%E6%94%BE%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">音效重复播放问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8F%91%E5%B8%83%E9%97%AE%E9%A2%98"><span class="toc-number">5.3.</span> <span class="toc-text">软件发布问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%A1%B9%E7%9B%AE%E5%B1%95%E7%A4%BA"><span class="toc-number">6.</span> <span class="toc-text">六、项目展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%9C%AA%E6%9D%A5%E8%AE%A1%E5%88%92"><span class="toc-number">7.</span> <span class="toc-text">七、未来计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/18/my-first-project/" title="从0到1开发我的第一个桌面软件 KillSoundHelper">从0到1开发我的第一个桌面软件 KillSoundHelper</a><time datetime="2026-07-17T16:00:00.000Z" title="发表于 2026-07-18 00:00:00">2026-07-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/03/hello/" title="我的第一篇博客">我的第一篇博客</a><time datetime="2026-07-02T16:00:00.000Z" title="发表于 2026-07-03 00:00:00">2026-07-03</time></div></div></div></div></div></div></main><footer id="footer" style="background: ture;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 天少</span></div><div class="footer_custom_text">C++学习中 | 正在做五子棋项目</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
